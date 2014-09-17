@@ -48,8 +48,7 @@ relabel <- function(x){
 	act_labs$V2[act_labs$V1 == x]  # Looks up the activity value in act_labs$V1 and returns the corresponding label
 	} 
 
-mean_std$activity <- as.integer(mean_std$activity)
-mean_std$activity <- sapply(mean_std$activity, relabel)
+mean_std <- mutate(mean_std, activity = sapply(as.integer(activity), relabel))
 
 ## 4. Create a second, independent tidy data set with the average of each variable for each activity and subject
 tidy <- mean_std %>%
