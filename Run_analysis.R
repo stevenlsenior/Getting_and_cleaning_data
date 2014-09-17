@@ -24,15 +24,17 @@ subject_train <- readLines("UCI HAR Dataset/train/subject_train.txt")
 test <- as.tbl(cbind(subject_test, Y_test, X_test))
 train <- as.tbl(cbind(subject_train, Y_train, X_train))
 
-# Use rbind_list() to merge the training and test data sets together
-all_data <- rbind_list(test, train)
-
 ## 2. Extracts only the measurements on the mean and standard deviation for each data set
 
 # Read in 'features.txt' and add as variable names
 features <- readLines("UCI HAR Dataset/features.txt")
 features <- c("subject", "activity", features)        # First two columns were added from 'subject' and 'Y' files
-names(all_data)  <- features
+names(test)  <- features
+names(train) <- features
+
+# Use rbind_list() to merge the training and test data sets together
+all_data <- rbind(test, train)
+
 
 # Use select() and contains() to select only columns containing mean and sd measurements
 mean_std <- select(all_data, subject, activity, contains("-mean()"), contains("-std()"))
@@ -46,10 +48,10 @@ relabel <- function(x){
 	act_labs$V2[act_labs$V1 == x]  # Looks up the activity value in act_labs$V1 and returns the corresponding label
 	} 
 
-mean_std <- mean_std %>%
-	mutate(activity = as.integer(activity)) %>%        # To enable comparison with act_labs$V1
-	mutate(activity = sapply(activity, relabel)) %>%   # Re-labels activity variable
-	group_by(subject, activity)                        # Groups by subject and activity for later calculating mean and sd
+mean_std$activity <- as.integer(mean_std$activity)
+mean_std$activity <- sapply(mean_std$activity, relabel)
 
 ## 4. Create a second, independent tidy data set with the average of each variable for each activity and subject
-tidy <- summarise_each(mean_std, funs = c("mean"))       # Calculate averages by subject and by activity
+tidy <- mean_std %>%
+	group_by(subject, activity) %>%
+	summarise_each(funs = "mean")       # Calculate averages by subject and by activity
