@@ -54,3 +54,6 @@ mean_std <- mutate(mean_std, activity = sapply(as.integer(activity), relabel))
 tidy <- mean_std %>%
 	group_by(subject, activity) %>%
 	summarise_each(funs = "mean")       # Calculate averages by subject and by activity
+
+# Write out tidy data file to upload
+write.table(tidy, file = "tidy_data.txt", row.name = FALSE)
