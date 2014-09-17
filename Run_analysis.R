@@ -11,15 +11,18 @@ library(dplyr)
 
 ## 1. Merge training and test data sets to create one data set
 
-# Read in X and Y variable sets for test and training data using readLines and read.table respectively
+# Read in X, Y and subject variable sets for test and training data using readLines and read.table respectively
 X_test <- read.table("UCI HAR Dataset/test/X_test.txt")
 Y_test <- readLines("UCI HAR Dataset/test/Y_test.txt")
+subject_test <- readLines("UCI HAR Dataset/test/subject_test.txt")
+
 X_train <- read.table("UCI HAR Dataset/train/X_train.txt")
 Y_train <- readLines("UCI HAR Dataset/train/Y_train.txt")
+subject_train <- readLines("UCI HAR Dataset/train/subject_train.txt")
 
 # Use cbind() to append the Y variable to the X variables in both test and train datasets
-test <- as.tbl(cbind(Y_test, X_test))
-train <- as.tbl(cbind(Y_train, X_train))
+test <- as.tbl(cbind(subject_test, Y_test, X_test))
+train <- as.tbl(cbind(subject_train, Y_train, X_train))
 
 # Use rbind_list() to merge the training and test data sets together
 all_data <- rbind_list(test, train)
@@ -28,21 +31,25 @@ all_data <- rbind_list(test, train)
 
 # Read in 'features.txt' and add as variable names
 features <- readLines("UCI HAR Dataset/features.txt")
-features <- c("Activity", features)    # Because the first column is now the 'Y' activity labels
+features <- c("subject", "activity", features)        # First two columns were added from 'subject' and 'Y' files
 names(all_data)  <- features
 
 # Use select() and contains() to select only columns containing mean and sd measurements
-mean_std <- select(all_data, Activity, contains("-mean()"), contains("-std()"))
+mean_std <- select(all_data, subject, activity, contains("-mean()"), contains("-std()"))
 
 ## 3. Uses descriptive activity names to name activities in the data set
 
 # Read in 'activity_labels.txt' and recode Activity values accordingly
 act_labs <- read.table("UCI HAR Dataset/activity_labels.txt")
-mean_std %>%
-	mutate(Activity = as.integer(Activity)) %>%   # To enable comparison with act_labs$V1
-	mutate(###)
+
+relabel <- function(x){
+	act_labs$V2[act_labs$V1 == x]  # Looks up the activity value in act_labs$V1 and returns the corresponding label
+	} 
+
+mean_std <- mean_std %>%
+	mutate(activity = as.integer(activity)) %>%        # To enable comparison with act_labs$V1
+	mutate(activity = sapply(activity, relabel)) %>%   # Re-labels activity variable
+	group_by(subject, activity)                        # Groups by subject and activity for later calculating mean and sd
 
 ## 4. Create a second, independent tidy data set with the average of each variable for each activity and subject
-
-	# Calculate avreages by subject and by activity
-	# Return tidy data.frame [check principles of tidy data]
+tidy <- summarise_each(mean_std, funs = c("mean"))       # Calculate averages by subject and by activity
