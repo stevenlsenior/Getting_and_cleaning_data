@@ -9,6 +9,13 @@
 install.packages("dplyr")
 library(dplyr)
 
+# Check whether UCI HAR Dataset is in the working directory and if not, download and unzip
+if(!file.exists("UCI HAR Dataset")){
+	fileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+	download.file(fileURL, destfile = "UCI HAR Dataset.zip", method  = "curl")
+	unzip(zipfile = "UCI HAR Dataset.zip")
+}
+
 ## 1. Merge training and test data sets to create one data set
 
 # Read in X, Y and subject variable sets for test and training data using readLines and read.table respectively
