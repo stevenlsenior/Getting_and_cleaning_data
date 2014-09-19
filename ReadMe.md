@@ -22,6 +22,7 @@ The script uses the dplyr package, which is installed and loaded in lines 9 and 
 > detach(package:plyr)
 
 1. Merge training and test data sets to create one data set
+
 In this step, I: 
 
 a) use the read.table() and readLines() commands to read in the values for the subject ids, activity ids, and associated smartphone sensor variables.
@@ -36,6 +37,7 @@ d) finally use rbind() to combine both ‘test’ and ‘train’ into one datas
 In this step I just use the ‘select()’ function from the dplyr package to select only those variables whose names contain the strings “-mean()” and “-std()”. I assign this to a new dataset called ‘mean_std’
 
 3. Uses descriptive activity names to name activities in the data set
+
 In this step I:
 
 a) read in the ‘activity_labels.txt’ file as ‘act_labs’.
