@@ -11,7 +11,9 @@ The final data set and file conform with the principles of tidy data:
 
 3) each type of observational unit forms its own table. In this case, all observational units are a subject performing an activity.
 
-The script assumes that the ‘UCI HAR Dataset’ provided by the course is in the working directory and has been unzipped. The dataset can be found here: 
+The script checks whether the ‘UCI HAR Dataset’ provided by the course is in the working directory and has been unzipped. If not, it downloads the file and unzips it. 
+
+The dataset can be found here: 
 
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 
