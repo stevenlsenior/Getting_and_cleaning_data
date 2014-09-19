@@ -1,9 +1,9 @@
-This ReadMe describes how I have approached the programming assignment for the ‘Getting and Cleaning Data’ Coursera course. 
+# This ReadMe describes how I have approached the programming assignment for the ‘Getting and Cleaning Data’ Coursera course. 
 
-Notes for peer-graders:
+# Notes for peer-graders:
 For ease of reading (and hopefully marking), the script follows the instructions provided in the project description. I have also tried to provide full explanation in comments in the code. There is no doubt a much more compact way to achieve the same result, using chained operations in the dplyr package. However, I’ve tried to write different code chunks for each part of the assignment. Hopefully this makes it clearer why I’ve done each thing.
 
-Notes on ‘tidy’ data:
+# Notes on ‘tidy’ data:
 The final data set and file conform with the principles of tidy data:
 1) each observation (i.e. each subject performing each activity) has its own row (and only one row).
 
@@ -21,7 +21,7 @@ The script uses the dplyr package, which is installed and loaded in lines 9 and 
 
 > detach(package:plyr)
 
-1. Merge training and test data sets to create one data set
+## 1. Merge training and test data sets to create one data set
 
 In this step, I: 
 
@@ -33,10 +33,11 @@ c) read in the ‘features.txt’ file to get the variable names. I add ‘subje
 
 d) finally use rbind() to combine both ‘test’ and ‘train’ into one dataset called ‘all_data’
 
-2. Extracts only the measurements on the mean and standard deviation for each data set
+## 2. Extracts only the measurements on the mean and standard deviation for each data set
+
 In this step I just use the ‘select()’ function from the dplyr package to select only those variables whose names contain the strings “-mean()” and “-std()”. I assign this to a new dataset called ‘mean_std’
 
-3. Uses descriptive activity names to name activities in the data set
+## 3. Uses descriptive activity names to name activities in the data set
 
 In this step I:
 
@@ -46,7 +47,7 @@ b) create a small function to look up the numeric activity values from the ‘ac
 
 c) using the mutate() function from dplyr and the relabel() function created above, relabel the ‘activity’ variable using the descriptive names from the ‘act_labs’ object.
 
-4. Create a second, independent tidy data set with the average of each variable for each activity and subject
+## 4. Create a second, independent tidy data set with the average of each variable for each activity and subject
 Here I:
 
 a) use a short chain of operations to group the ‘mean_std’ data tbl by subject and activity, calculate the mean for each variable using the ‘summarise_each()’ function, and assign this to a new data tbl called ‘tidy’
