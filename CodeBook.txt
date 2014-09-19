@@ -1,6 +1,13 @@
 
+Overview
+===============
 
-Below is the original description of how the data was created.
+This code book describes the variables in the tidy data set created for the course project for the ‘Getting and Cleaning Data’ Coursera. 
+
+The accompanying ReadMe.md file contains a detailed description of the processing of this data. Briefly, the original supplied data sets were merged, the variables describing the mean and standard deviation were extracted, the mean for each of these variables was calculated for each subject and each activity.
+
+
+Below is the original description of how the data was created, which was supplied with the data.
 
 Feature Selection 
 =================
@@ -59,6 +66,9 @@ tBodyAccMean
 tBodyAccJerkMean
 tBodyGyroMean
 tBodyGyroJerkMean
+
+Full list of variables
+=======================
 
 The complete list of variables of each feature vector is:
 1 tBodyAcc-mean()-X
