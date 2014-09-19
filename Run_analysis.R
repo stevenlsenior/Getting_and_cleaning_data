@@ -24,8 +24,6 @@ subject_train <- readLines("UCI HAR Dataset/train/subject_train.txt")
 test <- as.tbl(cbind(subject_test, Y_test, X_test))
 train <- as.tbl(cbind(subject_train, Y_train, X_train))
 
-## 2. Extracts only the measurements on the mean and standard deviation for each data set
-
 # Read in 'features.txt' and add as variable names
 features <- readLines("UCI HAR Dataset/features.txt")
 features <- c("subject", "activity", features)        # First two columns were added from 'subject' and 'Y' files
@@ -35,6 +33,7 @@ names(train) <- features
 # Use rbind_list() to merge the training and test data sets together
 all_data <- rbind(test, train)
 
+## 2. Extracts only the measurements on the mean and standard deviation for each data set
 
 # Use select() and contains() to select only columns containing mean and sd measurements
 mean_std <- select(all_data, subject, activity, contains("-mean()"), contains("-std()"))
